@@ -1,7 +1,7 @@
 {
   "name": "taskflow-api",
   "version": "1.0.0",
-  "description": "TaskFlow API — JWT auth, refresh tokens, layered architecture, 30 integration tests",
+  "description": "TaskFlow API — JWT auth, refresh tokens, layered architecture, 46 integration tests",
   "main": "dist/server.js",
   "repository": {
     "type": "git",
