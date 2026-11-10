@@ -1,4 +1,5 @@
 import rateLimit from 'express-rate-limit'
+import { MongoRateLimitStore } from './mongoRateLimitStore'
 
 // 10 intentos cada 15 minutos por IP en login/register.
 // AppError no aplica aca: express-rate-limit maneja su propia respuesta
@@ -6,6 +7,8 @@ import rateLimit from 'express-rate-limit'
 // skip en NODE_ENV=test: si no, los 40+ requests de auth.test.ts (que
 // comparten IP en supertest) empiezan a devolver 429 entre si.
 export const authRateLimiter = rateLimit({
+  store: new MongoRateLimitStore('auth'),
+  passOnStoreError: true, // si Mongo falla, mejor dejar pasar que bloquear a todos
   windowMs: 15 * 60 * 1000,
   limit: 10,
   standardHeaders: true,
@@ -17,6 +20,8 @@ export const authRateLimiter = rateLimit({
 // Cada invitado crea 1 usuario + 3 proyectos + 11 tareas: límite aparte y más
 // estricto para que nadie llene la base a fuerza de clicks.
 export const guestRateLimiter = rateLimit({
+  store: new MongoRateLimitStore('guest'),
+  passOnStoreError: true, // si Mongo falla, mejor dejar pasar que bloquear a todos
   windowMs: 60 * 60 * 1000,
   limit: 5,
   standardHeaders: true,
