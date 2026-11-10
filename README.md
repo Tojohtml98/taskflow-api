@@ -1,13 +1,13 @@
 # TaskFlow API
 
-> Production-grade REST API for task management — written in **TypeScript**, with JWT auth and refresh token rotation, a strict layered architecture and 41 integration tests.
+> Production-grade REST API for task management — written in **TypeScript**, with JWT auth and refresh token rotation, a strict layered architecture and 61 integration tests.
 
 [![CI](https://github.com/Tojohtml98/taskflow-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Tojohtml98/taskflow-api/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Express](https://img.shields.io/badge/express-4.x-000000?logo=express&logoColor=white)](https://expressjs.com)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
-[![Tests](https://img.shields.io/badge/tests-41%20passing-brightgreen)](#testing)
+[![Tests](https://img.shields.io/badge/tests-61%20passing-brightgreen)](#testing)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white)](#docker)
 
 ### 🚀 Live
@@ -27,7 +27,7 @@
 - 🧱 **Strict layered architecture** — Route → Controller → Service → Repository → Model. No layer skips another.
 - 🛡️ **Schema validation at the edge** — zod validates and strips every request body before it reaches a controller. Unknown fields never reach the DB.
 - 👤 **Guest access** — `POST /api/auth/guest` creates a temporary account seeded with sample projects, so anyone can try the app in one click. Expired guests (24h) are cleaned up with their projects and tasks.
-- 🧪 **55 integration tests** — auth flows, guest sessions, CRUD, ownership enforcement, input validation. In-memory Mongo, no external DB needed.
+- 🧪 **61 integration tests** — auth flows, guest sessions, CRUD, ownership enforcement, input validation. In-memory Mongo, no external DB needed.
 - 🐳 **Dockerized** — `docker-compose up` and you have API + Mongo running locally.
 - ☁️ **Deployed** — Blueprint config (`render.yaml`) ready to redeploy in 1 click.
 
@@ -72,7 +72,7 @@ src/
 - Mass-assignment protection: unknown fields (`role`, `owner`, `project`) are stripped, not persisted
 - Guest sessions with seeded sample data and automatic cleanup after 24h
 - Per-visitor rate limiting behind Render's proxy (`trust proxy`)
-- 55 integration tests covering auth, guest sessions, projects, tasks and validation
+- 61 integration tests covering auth, guest sessions, projects, tasks and validation
 
 ## API Endpoints
 
@@ -174,7 +174,7 @@ npm test
 
 ```
 Test Suites: 5 passed
-Tests:       55 passed
+Tests:       61 passed
   ✓ auth   — register, login, refresh, logout + body validation
   ✓ guest  — seeded workspace, isolation, 24h cleanup that never touches real users
   ✓ projects — CRUD + ownership enforcement + body validation
