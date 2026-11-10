@@ -17,5 +17,7 @@ const findByProject = (projectId: string) => Task.find({ project: projectId }).s
 const update = (id: string, data: TaskInput) =>
   Task.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true })
 const remove = (id: string) => Task.findByIdAndDelete(id)
+const insertMany = (data: TaskInput[]) => Task.insertMany(data)
+const removeByProjects = (projectIds: Types.ObjectId[]) => Task.deleteMany({ project: { $in: projectIds } })
 
-export default { create, findById, findByProject, update, remove }
+export default { create, findById, findByProject, update, remove, insertMany, removeByProjects }

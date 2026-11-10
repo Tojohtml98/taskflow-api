@@ -13,3 +13,14 @@ export const authRateLimiter = rateLimit({
   skip: () => process.env.NODE_ENV === 'test',
   message: { error: { message: 'Too many attempts, try again later' } },
 })
+
+// Cada invitado crea 1 usuario + 3 proyectos + 11 tareas: límite aparte y más
+// estricto para que nadie llene la base a fuerza de clicks.
+export const guestRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test',
+  message: { error: { message: 'Too many guest sessions, try again later' } },
+})

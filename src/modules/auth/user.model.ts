@@ -7,6 +7,7 @@ export interface IUser {
   password: string
   role: 'user' | 'admin'
   refreshToken: string | null
+  isGuest: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -24,9 +25,13 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     refreshToken: { type: String, default: null },
+    isGuest: { type: Boolean, default: false },
   },
   { timestamps: true }
 )
+
+// La limpieza de invitados vencidos busca por estos dos campos
+userSchema.index({ isGuest: 1, createdAt: 1 })
 
 // Antes de guardar, encripta la password si fue modificada
 userSchema.pre('save', async function () {

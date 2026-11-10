@@ -11,6 +11,10 @@ import projectRoutes from './modules/projects/project.routes'
 
 const app = express()
 
+// Render pone un proxy adelante: sin esto req.ip es la IP del proxy y el
+// rate limit se comparte entre TODOS los visitantes.
+app.set('trust proxy', 1)
+
 app.use(pinoHttp({ logger }))
 
 app.get('/', (_req: Request, res: Response) =>
@@ -58,6 +62,7 @@ app.get('/', (_req: Request, res: Response) =>
     <li><span class="method">GET</span><span class="path">/health</span></li>
     <li><span class="method">POST</span><span class="path">/api/auth/register</span></li>
     <li><span class="method">POST</span><span class="path">/api/auth/login</span></li>
+    <li><span class="method">POST</span><span class="path">/api/auth/guest</span><span class="note">temporary account with sample data</span></li>
     <li><span class="method">POST</span><span class="path">/api/auth/refresh</span></li>
     <li><span class="method">POST</span><span class="path">/api/auth/logout</span></li>
     <li><span class="method">CRUD</span><span class="path">/api/projects</span><span class="note">Bearer token</span></li>

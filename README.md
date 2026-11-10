@@ -26,7 +26,8 @@
 - 🔐 **Stateless auth** — access tokens (15m) + refresh token rotation with logout invalidation
 - 🧱 **Strict layered architecture** — Route → Controller → Service → Repository → Model. No layer skips another.
 - 🛡️ **Schema validation at the edge** — zod validates and strips every request body before it reaches a controller. Unknown fields never reach the DB.
-- 🧪 **41 integration tests** — auth flows, CRUD, ownership enforcement, input validation. In-memory Mongo, no external DB needed.
+- 👤 **Guest access** — `POST /api/auth/guest` creates a temporary account seeded with sample projects, so anyone can try the app in one click. Expired guests (24h) are cleaned up with their projects and tasks.
+- 🧪 **55 integration tests** — auth flows, guest sessions, CRUD, ownership enforcement, input validation. In-memory Mongo, no external DB needed.
 - 🐳 **Dockerized** — `docker-compose up` and you have API + Mongo running locally.
 - ☁️ **Deployed** — Blueprint config (`render.yaml`) ready to redeploy in 1 click.
 
@@ -69,7 +70,9 @@ src/
 - Global async error handling via `express-async-errors`
 - Request body validation with zod on every write endpoint — returns `400` with per-field detail
 - Mass-assignment protection: unknown fields (`role`, `owner`, `project`) are stripped, not persisted
-- 41 integration tests covering auth, projects, tasks and validation
+- Guest sessions with seeded sample data and automatic cleanup after 24h
+- Per-visitor rate limiting behind Render's proxy (`trust proxy`)
+- 55 integration tests covering auth, guest sessions, projects, tasks and validation
 
 ## API Endpoints
 
@@ -84,6 +87,7 @@ src/
 |--------|----------|-------------|------|
 | `POST` | `/api/auth/register` | Create account | ✗ |
 | `POST` | `/api/auth/login` | Login | ✗ |
+| `POST` | `/api/auth/guest` | Temporary guest account with sample data (24h) | ✗ |
 | `POST` | `/api/auth/refresh` | Refresh access token | ✗ |
 | `POST` | `/api/auth/logout` | Logout and invalidate token | ✓ |
 
@@ -169,9 +173,10 @@ npm test
 ```
 
 ```
-Test Suites: 3 passed
-Tests:       41 passed
+Test Suites: 5 passed
+Tests:       55 passed
   ✓ auth   — register, login, refresh, logout + body validation
+  ✓ guest  — seeded workspace, isolation, 24h cleanup that never touches real users
   ✓ projects — CRUD + ownership enforcement + body validation
   ✓ tasks  — CRUD + project access control + body validation
 ```

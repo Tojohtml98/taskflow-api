@@ -11,6 +11,11 @@ export const loginController = async (req: Request, res: Response): Promise<void
   res.json({ user, accessToken, refreshToken })
 }
 
+export const guestController = async (_req: Request, res: Response): Promise<void> => {
+  const { user, accessToken, refreshToken } = await authService.guest()
+  res.status(201).json({ user, accessToken, refreshToken })
+}
+
 export const refreshController = async (req: Request, res: Response): Promise<void> => {
   const tokens = await authService.refresh(req.body.refreshToken)
   res.json(tokens)
