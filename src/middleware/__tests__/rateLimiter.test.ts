@@ -23,7 +23,9 @@ describe('authRateLimiter', () => {
   })
 
   it('blocks with 429 after exceeding the limit', async () => {
-    for (let i = 0; i < 9; i++) {
+    // Los contadores viven en Mongo y setup.ts limpia la base entre tests:
+    // este test no depende del anterior. 10 permitidos, el 11.º se bloquea.
+    for (let i = 0; i < 10; i++) {
       await request(app).post('/limited')
     }
 
